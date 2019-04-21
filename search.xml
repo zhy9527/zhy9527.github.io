@@ -1,20 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[第一篇文章]]></title>
-    <url>%2F2019%2F04%2F14%2Fhello-world%E7%9A%84%E5%89%AF%E6%9C%AC%2F</url>
-    <content type="text"><![CDATA[NEW: DevDocs now comes with syntax highlighting. http://devdocs.io @DevDocstwitter.com/devdocs/status/356095192085962752 [title] [] [url] [link text]1code snippet 1[rectangle setX: 10 y: 10 width: 20 height: 20]; _.compactUnderscore.js12_.compact([0, 1, false, 2, &apos;&apos;, 3]);=&gt; [1, 2, 3] content]]></content>
+    <title><![CDATA[var、const、let区别]]></title>
+    <url>%2F2019%2F04%2F19%2Fjsvar%2F</url>
+    <content type="text"><![CDATA[]]></content>
       <categories>
-        <category>杂谈</category>
+        <category>javascript</category>
       </categories>
       <tags>
-        <tag>公司</tag>
+        <tag>js</tag>
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[你好]]></title>
-    <url>%2F2019%2F04%2F12%2Fhello-worl%2F</url>
-    <content type="text"><![CDATA[这里写我的博客]]></content>
+    <title><![CDATA[display:box,display:flex用法详解]]></title>
+    <url>%2F2019%2F04%2F14%2Fdisplayflex%2F</url>
+    <content type="text"><![CDATA[]]></content>
+      <categories>
+        <category>css</category>
+      </categories>
+      <tags>
+        <tag>css3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[markdown 语法整理]]></title>
+    <url>%2F2019%2F04%2F12%2Fmarkdown%2F</url>
+    <content type="text"><![CDATA[因为写博客，对markdown语法不是很熟悉，每次都要网上搜，很浪费时间，所以就整理记录一下。这也是写博客的初衷，常看看，温故而知新… 引用Markdown 中引用通过符号 ‘&gt;’ 来实现。’&gt;’ 符号后的空格，可有可无。在引用的区块内，允许换行存在，换行并不会终止引用的区块。如果要结束引用，需要一行空白行，来结束引用的区块。代码如下：123456&gt; 这是一句引用&gt; 这句仍然在引用区块内&gt;&gt; 这是一句嵌套引用&gt;&gt; 这句仍然在嵌套引用区块内&gt;&gt; 另起一行的引用。前面需要一个视觉上的空行表示内层嵌套的结束，空行前面的('&gt;')可以有可以没有。 效果如下： 这是一句引用这句仍然在引用区块内 这是一句嵌套引用这句仍然在嵌套引用区块内 另起一行的引用。前面需要一个视觉上的空行表示内层嵌套的结束，空行前面的(‘&gt;’)可以有可以没有。 注意： 结束]]></content>
+      <categories>
+        <category>markdown</category>
+      </categories>
+      <tags>
+        <tag>markdown</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Hello World]]></title>
