@@ -4,11 +4,11 @@
 
 # Site
 title: 人间指南
-subtitle: 一曲肝肠断,天涯何处觅知音
+subtitle: 山高路远不绝我/追踪你绝美的笑容
 description:  
 keywords: 
 author: 9527
-language: CN
+language: zh-Hans
 timezone: Asia/Shanghai
 
 # URL
@@ -73,9 +73,14 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type:
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
