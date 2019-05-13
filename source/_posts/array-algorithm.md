@@ -38,3 +38,17 @@ remove: function(array, val) {
   }
 }
 ```
+
+
+## 数组排序
+``` javascript
+// 数组移除值
+var arr = new Array(6)
+    arr[0] = "10"
+    arr[1] = "5"
+    arr[2] = "40"
+    arr[3] = "25"
+    arr[4] = "1000"
+    arr[5] = "1"
+console.log(arr.sort((a,b)=>{return b-a}))
+```
