@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="js,">
 
 
 
@@ -86,13 +86,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="人间指南">
-<meta property="og:url" content="https://zhy9527.github.io/archives/2019/index.html">
+<meta name="description" content="最近在做一个自定义复选框+全选/全不选功能，项目基于vue，现在整理如下 大致思路   声明一个空的数组checked，数据为list 选中：把选中的项的id push进checked; 取消选中：判断当前id是否在checked中，若存在删除当前id 全选功能: 遍历数组，取到所有id，push进checked 全不选：checked重置为空数组 全选按钮状态：判断checked数组的长度是否和">
+<meta name="keywords" content="js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义复选框+全选&#x2F;全不选">
+<meta property="og:url" content="https://zhy9527.github.io/2019/04/30/checkout/index.html">
 <meta property="og:site_name" content="人间指南">
+<meta property="og:description" content="最近在做一个自定义复选框+全选/全不选功能，项目基于vue，现在整理如下 大致思路   声明一个空的数组checked，数据为list 选中：把选中的项的id push进checked; 取消选中：判断当前id是否在checked中，若存在删除当前id 全选功能: 遍历数组，取到所有id，push进checked 全不选：checked重置为空数组 全选按钮状态：判断checked数组的长度是否和">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-05-14T16:03:52.256Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="人间指南">
+<meta name="twitter:title" content="自定义复选框+全选&#x2F;全不选">
+<meta name="twitter:description" content="最近在做一个自定义复选框+全选/全不选功能，项目基于vue，现在整理如下 大致思路   声明一个空的数组checked，数据为list 选中：把选中的项的id push进checked; 取消选中：判断当前id是否在checked中，若存在删除当前id 全选功能: 遍历数组，取到所有id，push进checked 全不选：checked重置为空数组 全选按钮状态：判断checked数组的长度是否和">
 
 
 
@@ -122,14 +127,14 @@
 
 
 
-  <link rel="canonical" href="https://zhy9527.github.io/archives/2019/">
+  <link rel="canonical" href="https://zhy9527.github.io/2019/04/30/checkout/">
 
 
 
 
 
 
-  <title>归档 | 人间指南</title>
+  <title>自定义复选框+全选/全不选 | 人间指南</title>
   
 
 
@@ -149,7 +154,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
@@ -294,391 +299,202 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-      <!-- <span class="archive-page-counter">
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhy9527.github.io/2019/04/30/checkout/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="9527">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=a2beccf56663f6241c5d3e05bf7f8cc5/fd039245d688d43fd735d63e701ed21b0ff43b59.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人间指南">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">自定义复选框+全选/全不选</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-30T17:15:37+08:00">
+                2019-04-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 13 篇日志。 继续努力。
-      </span> -->
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js/" itemprop="url" rel="index">
+                    <span itemprop="name">js</span>
+                  </a>
+                </span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2019">2019</h1>
-          </div>
-        
-        
 
-        
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/04/30/checkout/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/04/30/checkout/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/30/upload/" itemprop="url">
-              
-                <span itemprop="name">文件上传的2中方式，包含图片压缩</span>
-              
-            </a>
-        
-      </h2>
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-30T17:15:37+08:00" content="2019-04-30">
-          04-30
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+          
 
+        </div>
+      </header>
+    
 
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/30/wxcheck/" itemprop="url">
-              
-                <span itemprop="name">微信小程序checkbox样式修改</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-30T17:15:37+08:00" content="2019-04-30">
-          04-30
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/30/array-algorithm/" itemprop="url">
-              
-                <span itemprop="name">数组去重，删除数组指定值</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-30T17:15:37+08:00" content="2019-04-30">
-          04-30
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/30/checkout/" itemprop="url">
-              
-                <span itemprop="name">自定义复选框+全选/全不选</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-30T17:15:37+08:00" content="2019-04-30">
-          04-30
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <p>最近在做一个自定义复选框+全选/全不选功能，项目基于vue，现在整理如下</p>
+<p>大致思路</p>
+<blockquote>
+<ol>
+<li>声明一个空的数组checked，数据为list</li>
+<li>选中：把选中的项的id push进checked;</li>
+<li>取消选中：判断当前id是否在checked中，若存在删除当前id</li>
+<li>全选功能: 遍历数组，取到所有id，push进checked</li>
+<li>全不选：checked重置为空数组</li>
+<li>全选按钮状态：判断checked数组的长度是否和数据list长度一致，若一致则为全选状态，则给class加active</li>
+<li>复选框状态：用indexOf是否大于-1判断当前id是否存在checked中，若大于-1，则给class加active</li>
+</ol>
+</blockquote>
+<h2 id="自定义全选功能代码"><a href="#自定义全选功能代码" class="headerlink" title="自定义全选功能代码"></a>自定义全选功能代码</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 全选按钮 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span></span></span><br><span class="line"><span class="tag">  <span class="attr">class</span>=<span class="string">"check all"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">:class</span>=<span class="string">"list.length == currChecked.length ?'active':''"</span></span></span><br><span class="line"><span class="tag">  @<span class="attr">click</span>=<span class="string">"checkBoxAll"</span></span></span><br><span class="line"><span class="tag">&gt;</span>全选<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 复选框 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span></span></span><br><span class="line"><span class="tag">  <span class="attr">class</span>=<span class="string">"check"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">:class</span>=<span class="string">"currChecked.indexOf(item.id) &gt; -1 ? 'active':'a'"</span></span></span><br><span class="line"><span class="tag">  @<span class="attr">click</span>=<span class="string">"checkBox(currChecked,item.id)"</span></span></span><br><span class="line"><span class="tag">&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// </span></span><br><span class="line">data: &#123;</span><br><span class="line">  list: [], <span class="comment">// 全部选中的值</span></span><br><span class="line">  currChecked: []  <span class="comment">// 当前已选中的复选框</span></span><br><span class="line">&#125;,</span><br><span class="line">methods: &#123;</span><br><span class="line">  <span class="comment">// 点击复选框</span></span><br><span class="line">  checkBox: <span class="function"><span class="keyword">function</span>(<span class="params">array, id</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (array.indexOf(id) == <span class="number">-1</span>) &#123;</span><br><span class="line">      array.push(id);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.remove(array, id);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 全选按钮</span></span><br><span class="line">  checkBoxAll: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> currChecked = <span class="keyword">this</span>.currChecked</span><br><span class="line">    <span class="keyword">let</span> list = <span class="keyword">this</span>.list</span><br><span class="line">    <span class="keyword">if</span> (currChecked.length == list.length) &#123;</span><br><span class="line">      currChecked = [];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      currChecked = [];</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; list.length; i++) &#123;</span><br><span class="line">        currChecked.push(list[i].id);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> currChecked;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 数组移除值</span></span><br><span class="line">  remove: <span class="function"><span class="keyword">function</span>(<span class="params">array, val</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> index = array.indexOf(val);</span><br><span class="line">    <span class="keyword">if</span> (index &gt; <span class="number">-1</span>) &#123;</span><br><span class="line">      array.splice(index, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/29/framework/" itemprop="url">
-              
-                <span itemprop="name">那些令人难忘的框架</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-29T17:15:37+08:00" content="2019-04-29">
-          04-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/19/jsvar/" itemprop="url">
-              
-                <span itemprop="name">var、const、let区别</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-19T17:15:37+08:00" content="2019-04-19">
-          04-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/19/rxjs/" itemprop="url">
-              
-                <span itemprop="name">RXJS学习笔记</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-19T17:15:37+08:00" content="2019-04-19">
-          04-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/18/gulp/" itemprop="url">
-              
-                <span itemprop="name">gulp使用记录</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-18T17:15:37+08:00" content="2019-04-18">
-          04-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/14/displaybox/" itemprop="url">
-              
-                <span itemprop="name">display:box</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-14T17:15:37+08:00" content="2019-04-14">
-          04-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/12/markdown/" itemprop="url">
-              
-                <span itemprop="name">markdown 语法整理</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-12T01:11:33+08:00" content="2019-04-12">
-          04-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"># js</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/29/framework/" rel="next" title="那些令人难忘的框架">
+                <i class="fa fa-chevron-left"></i> 那些令人难忘的框架
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/30/array-algorithm/" rel="prev" title="数组去重，删除数组指定值">
+                数组去重，删除数组指定值 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/2019/page/2/">2</a><a class="extend next" rel="next" href="/archives/2019/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -686,6 +502,13 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
 
         </div>
         
@@ -714,8 +537,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -777,6 +609,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义全选功能代码"><span class="nav-number">1.</span> <span class="nav-text">自定义全选功能代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -942,6 +790,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
