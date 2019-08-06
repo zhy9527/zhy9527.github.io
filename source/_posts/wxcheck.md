@@ -1,9 +1,9 @@
 ---
 title: 微信小程序checkbox样式修改
 date: 2019-04-30 17:15:37
-tags: css
+tags: weChat
 comments: true
-categories: "css"
+categories: "weChat"
 ---
 > [原文](https://www.jianshu.com/p/f8d7932006c0)
 

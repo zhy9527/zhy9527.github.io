@@ -1,9 +1,9 @@
 ---
 title: 微信小程序阻止事件冒泡
 date: 2019-05-30 17:15:37
-tags: js
+tags: WeChat
 comments: true
-categories: "js"
+categories: "WeChat"
 ---
 
 ## 微信小程序阻止事件冒泡

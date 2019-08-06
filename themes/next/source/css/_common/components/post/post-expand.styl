@@ -8,9 +8,53 @@
   background: #fff;
   border-radius: 6px;
   padding: 20px;
-  margin: 20px 0;
+  // margin: 20px 0;
   box-shadow: 0 0 10px #eee;
+  position:relative;
+  
+  
 }
+@keyframes changeWidth
+{
+	from {width:0;}
+	to {width:100%;}
+}
+
+@-webkit-keyframes changeWidth /*Safari and Chrome*/
+{
+	from {width:0;}
+	to {width:100%;}
+}
+.posts-expand .post-index.post{
+  border-radius: 0;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  }
+.posts-expand .post-index.post:hover{
+ -webkit-transform: scale(1.04, 1.04);
+  transform: scale(1.04, 1.04);
+  box-shadow: 0 0 10px #eee;
+  &::after{
+    content: '';
+    width:0;
+    height:1px;
+    left:0;
+    display: block;
+    position: absolute;
+    top: 0;
+    background: #000;
+    animation:changeWidth 10s infinite;
+	  -webkit-animation:changeWidth 10s infinite; /*Safari and Chrome*/
+  }
+  }
+.posts-expand .post .post-title{
+    margin: 0;
+    text-align: left 
+    }
+.posts-expand .post .post-meta{
+    margin-bottom: 0;
+    text-align: left 
+  }
 @media (max-width: 767px) {
   .posts-expand {
     margin: 0 20px;
