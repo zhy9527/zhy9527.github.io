@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[微信小程序多图上传，包含压缩，以base64格式]]></title>
+    <url>%2F2019%2F08%2F01%2Fwehcat%2Fwechat-upload%2F</url>
+    <content type="text"><![CDATA[背景需求：小程序多图上传，转base64上传，后来发现图片太大，上传失败思路：获取原图临时路径，用canvas重绘图片并生成压缩后临时路径，生成base64格式主要方法： wx.chooseImage 调用微信选择图片api wx.getImageInfo 获取图片详情信息 wx.createCanvasContext 创建canvas wx.getFileSystemManager().readFile 生成base64格式图片 效果如下 WXML内容123456789101112131415161718192021&lt;view class='content'&gt; &lt;view class='img-box'&gt; &lt;view class='img-list'&gt; &lt;block wx:for="&#123;&#123;fileBase64&#125;&#125;" wx:key=""&gt; &lt;view class='img-item'&gt; &lt;image src='data:image/jpg;base64,&#123;&#123;item&#125;&#125;' data-index='&#123;&#123;index&#125;&#125;' class='img' mode='aspectFill'&gt;&lt;/image&gt; &lt;view class="upload_progress" style='opacity: &#123;&#123;0.7*(1-item.upload_percent/100)&#125;&#125;' wx:if="&#123;&#123;item.upload_percent &lt; 100&#125;&#125;"&gt;&#123;&#123;item.upload_percent&#125;&#125;%&lt;/view&gt; &lt;view class='delete' data-index='&#123;&#123;index&#125;&#125;' catchtap='deleteImg'&gt;&lt;/view&gt; &lt;/view&gt; &lt;/block&gt; &lt;view class='chooseimg' bindtap='uploadDetailImage' wx:if="&#123;&#123; uploadMax === -1 || uploadMax &gt; tempFiles.length &#125;&#125;"&gt; &lt;view class="weui-uploader__input-box"&gt;&lt;/view&gt; &lt;/view&gt; &lt;/view&gt; &lt;/view&gt;&lt;/view&gt;&lt;canvas canvas-id="canvas0" style="width:&#123;&#123;cWidth0&#125;&#125;px;height:&#123;&#123;cHeight0&#125;&#125;px;position: absolute;left:-1000px;top:-1000px;"&gt;&lt;/canvas&gt;&lt;canvas canvas-id="canvas1" style="width:&#123;&#123;cWidth1&#125;&#125;px;height:&#123;&#123;cHeight1&#125;&#125;px;position: absolute;left:-1000px;top:-1000px;"&gt;&lt;/canvas&gt;&lt;canvas canvas-id="canvas2" style="width:&#123;&#123;cWidth2&#125;&#125;px;height:&#123;&#123;cHeight2&#125;&#125;px;position: absolute;left:-1000px;top:-1000px;"&gt;&lt;/canvas&gt;&lt;canvas canvas-id="canvas3" style="width:&#123;&#123;cWidth3&#125;&#125;px;height:&#123;&#123;cHeight3&#125;&#125;px;position: absolute;left:-1000px;top:-1000px;"&gt;&lt;/canvas&gt;&lt;canvas canvas-id="canvas4" style="width:&#123;&#123;cWidth4&#125;&#125;px;height:&#123;&#123;cHeight4&#125;&#125;px;position: absolute;left:-1000px;top:-1000px;"&gt;&lt;/canvas&gt; CCS篇幅较长，在最后面 注意事项/有坑未填： 上传图片重复没有过滤 最多只能上传5张图片 图片太大、绘制太长，会出现空白 js部分123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172// 选取图片的方法 uploadDetailImage: function (e) &#123; let that = this; const success = (res) =&gt; &#123; // 返回原图临时路径,res.tempFilePaths res.tempFilePaths.forEach((item, index) =&gt; &#123; // 获取图片的信息 wx.getImageInfo(&#123; src: item, success: function (res) &#123; //----------绘制图形并取出图片路径-------------- var ratio = 2; var canvasWidth = res.width //图片原始长宽 var canvasHeight = res.height while (canvasWidth &gt; 600 || canvasHeight &gt; 600) &#123;// 保证宽高在400以内 canvasWidth = Math.trunc(res.width / ratio) canvasHeight = Math.trunc(res.height / ratio) ratio++; &#125; that.setData(&#123; ['cWidth'+index]: canvasWidth, ['cHeight' + index]: canvasHeight &#125;) // 创建canvas var ctx = wx.createCanvasContext('canvas' + index) ctx.drawImage(res.path, 0, 0, canvasWidth, canvasHeight) ctx.draw(false, setTimeout(function () &#123; // 把当前画布指定区域的内容导出生成指定大小的图片 wx.canvasToTempFilePath(&#123; canvasId: 'canvas' + index, fileType: 'jpg', success: function (res) &#123; // 生成base64 wx.getFileSystemManager().readFile(&#123; filePath: res.tempFilePath, encoding: 'base64', success: res =&gt; &#123; var fileBase64 = that.data.fileBase64 fileBase64.push(res.data); that.setData(&#123; fileBase64: fileBase64 &#125;) &#125; &#125;) &#125;, fail: function (res) &#123; console.log(res.errMsg) &#125; &#125;) &#125;, 500)) // 留给绘制时间 &#125; &#125;) &#125;) &#125; // 调用微信选择图片api wx.chooseImage(&#123; count, sizeType, sourceType, success &#125;) &#125;, // 删除图片 deleteImg(e) &#123; let index = e.currentTarget.dataset.index let arr = this.data.fileBase64 arr.splice(index, 1) this.setData(&#123; fileBase64: arr &#125;) &#125; CSS内容123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109.content &#123; width: 100%; background-color: #fff;&#125;.content .img-list::after &#123; content: ''; display: block; clear: both; visibility: hidden; height: 0;&#125;.content .img-item &#123; float: left; width: 160rpx; height: 160rpx; margin: 0 18rpx 18rpx 0; border-radius: 8rpx; position: relative; /* padding: 8rpx; */ /* border: 1rpx solid #f5222d; */ /* box-sizing: border-box; */&#125;.content .img-item .delete &#123; width: 30rpx; height: 30rpx; position: absolute; right: -10rpx; top: -10rpx; text-align: right; vertical-align: top; z-index: 2; background-size: 30rpx auto; background-color: #fff; border: 4rpx solid #fff; border-radius: 50%; background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='16' height='16' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Ccircle fill-opacity='.4' fill='%23404040' cx='8' cy='8' r='8'/%3E%3Cpath d='M11.898 4.101a.345.345 0 0 0-.488 0L8 7.511l-3.411-3.41a.345.345 0 0 0-.488.488l3.411 3.41-3.41 3.412a.345.345 0 0 0 .488.488L8 8.487l3.411 3.411a.345.345 0 0 0 .488-.488L8.488 8l3.41-3.412a.344.344 0 0 0 0-.487z' fill='%23FFF'/%3E%3C/g%3E%3C/svg%3E");&#125;.content .img-item .img &#123; display: block; width: 100%; height: 100%; border-radius: 8rpx;&#125;/* 上传进度 */.upload_progress &#123; position: absolute; top: 0; right: 0; /* opacity: 0.7; */ border-radius: 8rpx; background-color: #000; color: #fff; width: 158rpx; height: 158rpx; text-align: center; line-height: 158rpx; font-size: 24rpx;&#125;.chooseimg &#123; background-color: #fff;&#125;.weui-uploader__input-box &#123; float: left; position: relative; margin-right: 9px; margin-bottom: 9px; width: 160rpx; height: 160rpx; border: 1px dashed #ebebeb; border-radius: 8rpx;&#125;.weui-uploader__input-box:before &#123; width: 2px; height: 39px;&#125;.weui-uploader__input-box:after &#123; width: 39px; height: 2px;&#125;.weui-uploader__input-box:after, .weui-uploader__input-box:before &#123; content: " "; position: absolute; top: 50%; left: 50%; -webkit-transform: translate(-50%, -50%); transform: translate(-50%, -50%); background-color: #d9d9d9;&#125;.tips &#123; color: #666; font-size: 24rpx; padding-bottom: 20rpx;&#125;.img-box &#123; width: 100%; padding: 20rpx 10rpx 0 28rpx;&#125;]]></content>
+      <categories>
+        <category>WeChat</category>
+      </categories>
+      <tags>
+        <tag>WeChat</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[常用vue package]]></title>
-    <url>%2F2019%2F07%2F14%2Fvuepackage%2F</url>
+    <url>%2F2019%2F07%2F14%2Fjs%2Fvuepackage%2F</url>
     <content type="text"><![CDATA[UI框架 vant，文档地址适合移动端、电商等场景 Element-UI,文档地址饿了么前端框架、适合后台管理系统、中台等场景 iview，文档地址非常优秀的一款组件，比element-ui漂亮，但是table感觉没有element-ui好用 Ant Design Vue, 文档地址 VUEX vuex-persistedstatevuex数据持久化、刷新数据依然保留 网络请求 axios flyio 插件 vue-awesome-swiper幻灯片 v-distpicker省市区联动]]></content>
       <categories>
         <category>js</category>
@@ -13,7 +24,7 @@
   </entry>
   <entry>
     <title><![CDATA[iphone上input不易聚焦]]></title>
-    <url>%2F2019%2F06%2F30%2Fuserselect%2F</url>
+    <url>%2F2019%2F06%2F30%2Fjs%2Fuserselect%2F</url>
     <content type="text"><![CDATA[iphone上input不易聚焦父元素加个-webkit-user-select:text;才有效，单独子元素即使加-webkit-user-select:text也无效 123&lt;div style="-webkit-user-select:text;"&gt; &lt;input type="text" placeholder="请输入用户名" /&gt;&lt;/div&gt; 1&gt; [user-select CSS属性，控制着用户能否选中文本。](https://developer.mozilla.org/zh-CN/docs/Web/CSS/user-select) 语法user-select有以下几个值： none元素及其子元素的文本不可选中。 请注意这个Selection 对象可以包含这些元素。 从Firefox 21开始， none 表现的像 -moz-none，因此可以使用 -moz-user-select: text 在子元素上重新启用选择。 autoauto的计算值确定如下： 在 ::before 和 ::after 伪元素上，计算属性是 none如果元素是可编辑元素，则计算值是 contain否则，如果此元素的父元素的 user-select 的计算值为 all, 计算值则为 all否则，如果此元素的父级上的 user-select 的计算值为 none, 计算值则为 none否则，计算值则为 text text用户可以选择文本。 -moz-none元素和子元素的文本将显示为无法选择它们。 请注意， Selection 对象可以包含这些元素。 可以使用 -moz-user-select: text. 在子元素上重新启用选择。 从Firefox 21开始，none 表现得像 -moz-none. all在一个HTML编辑器中，当双击子元素或者上下文时，那么包含该子元素的最顶层元素也会被选中。 containelement (IE-specific alias)允许选择在元素内开始; 但是，选择将包含在该元素的边界内。 仅在Internet Explorer中受支持。]]></content>
       <categories>
         <category>css</category>
@@ -24,7 +35,7 @@
   </entry>
   <entry>
     <title><![CDATA[小程序端运用vant]]></title>
-    <url>%2F2019%2F06%2F19%2FvantWeapp%2F</url>
+    <url>%2F2019%2F06%2F19%2Fjs%2FvantWeapp%2F</url>
     <content type="text"><![CDATA[Vant Weapp Vant Weapp 是移动端 Vue 组件库 Vant 的小程序版本，两者基于相同的视觉规范，提供一致的 API 接口，助力开发者快速搭建小程序应用。 文档地址]]></content>
       <categories>
         <category>weChat</category>
@@ -35,7 +46,7 @@
   </entry>
   <entry>
     <title><![CDATA[微信小程序阻止事件冒泡]]></title>
-    <url>%2F2019%2F05%2F30%2FwechatEvent%2F</url>
+    <url>%2F2019%2F05%2F30%2Fwehcat%2FwechatEvent%2F</url>
     <content type="text"><![CDATA[微信小程序阻止事件冒泡 使用 catch 不用bindbind事件绑定不会阻止冒泡事件向上冒泡，catch事件绑定可以阻止冒泡事件向上冒泡。 如在下边这个例子中，点击 inner view 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)，点击 middle view 会触发handleTap2，点击 outer view 会触发handleTap1。 123456789&lt;view id="outer" bindtap="handleTap1"&gt; outer view &lt;view id="middle" catchtap="handleTap2"&gt; middle view &lt;view id="inner" bindtap="handleTap3"&gt; inner view &lt;/view&gt; &lt;/view&gt;&lt;/view 在方法最后加上return false]]></content>
       <categories>
         <category>WeChat</category>
@@ -46,7 +57,7 @@
   </entry>
   <entry>
     <title><![CDATA[在vue中应用weui]]></title>
-    <url>%2F2019%2F05%2F16%2Fweuivue%2F</url>
+    <url>%2F2019%2F05%2F16%2Fjs%2Fweuivue%2F</url>
     <content type="text"><![CDATA[在vue中使用weui的两种方式 cdn形式引入这种方式直接在html引入即可 1234567891011121314151617181920&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt; &lt;meta charset="utf-8"&gt; &lt;meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt; &lt;title&gt;SFOPEN&lt;/title&gt; &lt;link rel="shortcut icon" href="favicon.ico" /&gt; &lt;link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.3/weui.min.css"&gt; &lt;script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.4/weui.min.js"&gt;&lt;/script&gt; &lt;style&gt; .weui-dialog__btn_primary&#123;color: #1131fe&#125; &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div id="app"&gt;&lt;/div&gt; &lt;!-- built files will be auto injected --&gt; &lt;/body&gt;&lt;/html&gt; 在本地引入有些情况不适用cdn的形式引入，就需要下载到本地引入 1234// main.js// 引入weui文件，并且把weui对象绑定到window对象上，方便全局使用import './comm/css/weui.min.css'window.weui = require('./comm/js/weui.min.js').weui]]></content>
       <categories>
         <category>js</category>
@@ -57,7 +68,7 @@
   </entry>
   <entry>
     <title><![CDATA[数组去重，删除数组指定值]]></title>
-    <url>%2F2019%2F04%2F30%2Farray-algorithm%2F</url>
+    <url>%2F2019%2F04%2F30%2Fjs%2Farray-algorithm%2F</url>
     <content type="text"><![CDATA[最近在做一个自定义复选框+全选/全不选功能，涉及到一些数组的处理,自定义复选框 数组去重123456789uniq: function(array) &#123; var temp = []; //一个新的临时数组 for (var i = 0; i &lt; array.length; i++) &#123; if (temp.indexOf(array[i]) == -1) &#123; temp.push(array[i]); &#125; &#125; return temp;&#125; 1234// es6中新增的数据结构Setconst set = new Set([1, 2, 3, 4, 4]);[...set]// [1, 2, 3, 4] 删除指定数组1234567// 数组移除值remove: function(array, val) &#123; var index = array.indexOf(val); if (index &gt; -1) &#123; array.splice(index, 1); &#125;&#125; 数组排序123456789// 数组移除值var arr = new Array(6) arr[0] = "10" arr[1] = "5" arr[2] = "40" arr[3] = "25" arr[4] = "1000" arr[5] = "1"console.log(arr.sort((a,b)=&gt;&#123;return b-a&#125;))]]></content>
       <categories>
         <category>js</category>
@@ -68,7 +79,7 @@
   </entry>
   <entry>
     <title><![CDATA[微信小程序checkbox样式修改]]></title>
-    <url>%2F2019%2F04%2F30%2Fwxcheck%2F</url>
+    <url>%2F2019%2F04%2F30%2Fwehcat%2Fwxcheck%2F</url>
     <content type="text"><![CDATA[原文 微信小程序checkbox样式修改1234567891011121314151617181920212223242526/*checkbox 整体大小 */checkbox &#123; width: 240rpx; height: 90rpx;&#125;/*checkbox 选项框大小 */checkbox .wx-checkbox-input &#123; width: 50rpx; height: 50rpx;&#125;/*checkbox选中后样式 */checkbox .wx-checkbox-input.wx-checkbox-input-checked &#123; background: #FF525C;&#125;/*checkbox选中后图标样式 */checkbox .wx-checkbox-input.wx-checkbox-input-checked::before &#123; width: 28rpx; height: 28rpx; line-height: 28rpx; text-align: center; font-size: 22rpx; color: #fff; background: transparent; transform: translate(-50%, -50%) scale(1); -webkit-transform: translate(-50%, -50%) scale(1);&#125; 效果如下]]></content>
       <categories>
         <category>weChat</category>
@@ -79,7 +90,7 @@
   </entry>
   <entry>
     <title><![CDATA[文件上传的2中方式，包含图片压缩]]></title>
-    <url>%2F2019%2F04%2F30%2Fupload%2F</url>
+    <url>%2F2019%2F04%2F30%2Fjs%2Fupload%2F</url>
     <content type="text"><![CDATA[代码摘自自己项目，项目框架是VUE，这里只说明功能实现，具体知识点请去MDN查看 图片转base64上传1&lt;input type="file" name="pic" id="pic" class="upload-btn" @change="uploadImg($event,'front')" accept="image/*" /&gt; 看下面代码，我们先看下FileReader对象： FileReader，查看介绍， FileReader 异步读取存储在用户计算机上的文件 当 FileReader 读取文件的方式为 readAsArrayBuffer, readAsBinaryString, readAsDataURL 或者 readAsText 的时候，会触发一个 load 事件。从而可以使用 FileReader.onload 属性对该事件进行处理。 这里会用到load属性 和readAsDataURL()方法 123456789uploadImg(e,type) &#123; let that = this let file = e.target.files[0] let reader = new FileReader() reader.readAsDataURL(file) reader.onload = function(e) &#123; // 当 FileReader 读取文件的方式为 readAsArrayBuffer, readAsBinaryString, readAsDataURL 或者 readAsText 的时候，会触发一个 load 事件 console.log(this.result) // 生成base64 &#125;&#125; 运用formData文件流上传1&lt;input type="file" name="pic" id="pic" class="upload-btn" @change="uploadImg($event,'front')" accept="image/*" /&gt; 这里会用到URL对象和formData对象，包含了图片压缩，代码注释中会说明一些自己的理解，若有偏颇，欢迎指正 URL对象相关内容请移步这里 formData对象请移步这里,formData我的理解是可以用ajax形式模拟form表单发送数据 图片压缩我们单独一个模块说明 123456789101112131415161718192021222324252627282930313233343536373839// 上传身份证图片 uploadImg(e,type) &#123; let that = this let file = e.target.files[0] lrz(file,&#123;quality: 0.6,width: 800&#125;) .then(function (rst) &#123; // 压缩成功会执行，这里的rst是压缩后图片的结果，我看了下大概压缩率能达到70%，10MB可以压缩到2MB console.log(rst); if (type == 'front')&#123; that.frontImgUrl = URL.createObjectURL(rst.file) // 这里我的理解是生成了一个图片的url that.frontImg = rst.file // 这是要发送给后端的数据 &#125; else &#123; that.backImgUrl = URL.createObjectURL(rst.file) that.backImg = rst.file &#125; &#125;) .catch(function (err) &#123; // 处理失败会执行 console.log(err) &#125;) &#125;, submit() &#123; let that = this // 创建FormData对象，并且把要传给后端的参数append进去 let formdata = new FormData(); formdata.append('id',patient.id); formdata.append('frontImg',this.frontImg); formdata.append('backImg',this.backImg); // Fetch是我封装的axios，这里可以忽略，这里重要的就是组装formdata数据 Fetch(&#123; url: "/api/xxxxx", method: "post", data: formdata &#125;).then(response =&gt; &#123; that.$router.push("aaa"); &#125;).catch(error =&gt; &#123; console.log(error); &#125;); &#125; 图片压缩 图片压缩应该是图片上传必然会遇到的问题，如果图片过大，上传慢且容易失败。我们遇到的问题是图片太大后端无法响应。 因为以前用过这个压缩库，所以这次拿出来说下，也比较简单 图片压缩代码github地址请点击 参数配置, 这里也讲的很清楚，不在赘述 12345678910111213lrz(this.files[0],&#123; // 这里会涉及到&#125;).then(function (rst) &#123; // 处理成功会执行 console.log(rst);&#125;).catch(function (err) &#123; // 处理失败会执行&#125;).always(function () &#123; // 不管是成功失败，都会执行&#125;);]]></content>
       <categories>
         <category>js</category>
@@ -90,7 +101,7 @@
   </entry>
   <entry>
     <title><![CDATA[自定义复选框+全选/全不选]]></title>
-    <url>%2F2019%2F04%2F30%2Fcheckout%2F</url>
+    <url>%2F2019%2F04%2F30%2Fjs%2Fcheckout%2F</url>
     <content type="text"><![CDATA[最近在做一个自定义复选框+全选/全不选功能，项目基于vue，现在整理如下 大致思路 声明一个空的数组checked，数据为list 选中：把选中的项的id push进checked; 取消选中：判断当前id是否在checked中，若存在删除当前id 全选功能: 遍历数组，取到所有id，push进checked 全不选：checked重置为空数组 全选按钮状态：判断checked数组的长度是否和数据list长度一致，若一致则为全选状态，则给class加active 复选框状态：用indexOf是否大于-1判断当前id是否存在checked中，若大于-1，则给class加active 自定义全选功能代码123456789101112&lt;!-- 全选按钮 --&gt;&lt;div class="check all" :class="list.length == currChecked.length ?'active':''" @click="checkBoxAll"&gt;全选&lt;/div&gt;&lt;!-- 复选框 --&gt;&lt;div class="check" :class="currChecked.indexOf(item.id) &gt; -1 ? 'active':'a'" @click="checkBox(currChecked,item.id)"&gt;&lt;/div&gt; 123456789101112131415161718192021222324252627282930313233343536// data: &#123; list: [], // 全部选中的值 currChecked: [] // 当前已选中的复选框&#125;,methods: &#123; // 点击复选框 checkBox: function(array, id) &#123; if (array.indexOf(id) == -1) &#123; array.push(id); &#125; else &#123; this.remove(array, id); &#125; &#125;, // 全选按钮 checkBoxAll: function() &#123; let currChecked = this.currChecked let list = this.list if (currChecked.length == list.length) &#123; currChecked = []; &#125; else &#123; currChecked = []; for (var i = 0; i &lt; list.length; i++) &#123; currChecked.push(list[i].id); &#125; &#125; return currChecked; &#125;, // 数组移除值 remove: function(array, val) &#123; var index = array.indexOf(val); if (index &gt; -1) &#123; array.splice(index, 1); &#125; &#125;&#125;]]></content>
       <categories>
         <category>js</category>
@@ -101,7 +112,7 @@
   </entry>
   <entry>
     <title><![CDATA[那些令人难忘的框架]]></title>
-    <url>%2F2019%2F04%2F29%2Fframework%2F</url>
+    <url>%2F2019%2F04%2F29%2Fcss%2Fframework%2F</url>
     <content type="text"><![CDATA[JquerygreensockaltTemplate]]></content>
       <categories>
         <category>framework</category>
@@ -111,19 +122,8 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[var、const、let区别]]></title>
-    <url>%2F2019%2F04%2F19%2Fjsvar%2F</url>
-    <content type="text"><![CDATA[]]></content>
-      <categories>
-        <category>js</category>
-      </categories>
-      <tags>
-        <tag>js</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[RXJS学习笔记]]></title>
-    <url>%2F2019%2F04%2F19%2Frxjs%2F</url>
+    <url>%2F2019%2F04%2F19%2Fjs%2Frxjs%2F</url>
     <content type="text"></content>
       <categories>
         <category>js</category>
@@ -133,8 +133,19 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[var、const、let区别]]></title>
+    <url>%2F2019%2F04%2F19%2Fjs%2Fjsvar%2F</url>
+    <content type="text"><![CDATA[]]></content>
+      <categories>
+        <category>js</category>
+      </categories>
+      <tags>
+        <tag>js</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[gulp使用记录]]></title>
-    <url>%2F2019%2F04%2F18%2Fgulp%2F</url>
+    <url>%2F2019%2F04%2F18%2Fjs%2Fgulp%2F</url>
     <content type="text"><![CDATA[gulp介绍gulp是一个前端自动化构建工具，前端开发者可以使用它来处理常见任务: 搭建web服务器 文件保存时自动重载浏览器 使用css预处理器如Sass、LESS 优化资源，比如压缩CSS、JavaScript、压缩图片、合并文件 资源文件加版本号，刷新加载最新资源，保证资源文件实时更新 gulp入门指南 这部分内容来源于中文官方文档 全局安装 gulp： 1$ npm install --global gulp 作为项目的开发依赖（devDependencies）安装，这里为了举例安装gulp和gulp-clean，gulp-clean可以用来清空指定文件夹： 1$ npm install --save-dev gulp gulp-clean 在项目根目录下创建一个名为 gulpfile.js 的文件，点击可以查看gulp-clean使用方法： 12345678910var gulp = require('gulp')、 clean = require('gulp-clean') //清空文件夹,这里gulp.task('default', function() &#123; // 将你的默认的任务代码放在这&#125;);//清除dist文件夹gulp.task('clean',function()&#123; return gulp.src('dist', &#123;read: false&#125;) .pipe(clean());&#125;) 运行gulp： 1$ gulp 默认的名为 default 的任务（task）将会被运行，在这里，这个任务并未做任何事情。想要单独执行特定的任务（task），请输入 gulp &lt;task&gt; &lt;othertask&gt;： 1$ gulp clean 接下来介绍下gulp相关的API，gulp的API有.src、.watch、.dest、.task。 gulp API 文档这里只简单介绍用法，和自己理解，官方文档讲解的更为详细，如果想深入学习，请移步官方文档 gulp.src(globs[, options]) 匹配想要处理的文件，例如： 1gulp.src('client/js/*.js') // 对clent/js下面的所有js文件进行处理 gulp.dest(path[, options]) dest就是要把处理完的文件放到指定位置，例如： 12gulp.src('client/js/*.js') // 对clent/js下面的所有js文件进行处理 .pipe(gulp.dest("dist/js/")); // 把处理完的文件放到`dist/js/`这个目录下面 因为有同事问过pipe方法，这里顺便提下。可以给他理解成一个管道，文件通过管道流入，可能有很多管道相连，每个管道处理不同的事物，a管道负责压缩js，b管道负责修改文件名为jquery.min.js，最后处理完就是压缩后的文件名为jquery.min.js的文件 关于pipe可以点击这里查看stream.pipe()，具体不在阐述。 gulp.task(name[, deps], fn) task定义任务，你要做什么，就是用它定义，例如要定义一个压缩js的任务，代码如下 12345678var gulp = require('gulp'), // gulp基础库 uglify = require('gulp-uglify') //压缩Js// 压缩JSgulp.task('uglifyJs',function()&#123; // 定义名为uglifyJs的任务，用来压缩js gulp.src("src/content/js/**/*.js") // 需要压缩的文件是src目录下 .pipe(uglify()) // 压缩js .pipe(gulp.dest("dist/content/js/")); // 压缩完成后放到dist目录下&#125;) 如果想执行这个任务，在终端输入以下命令： 1$ gulp uglifyJs gulp.watch(glob[, opts], tasks) 监听文件变化，如下代码/js/目录下的文件有任何变化，都会执行function 123gulp.watch('js/**/*.js', function(event) &#123; console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');&#125;); 常用插件及说明123456789101112gulp-sass // SCSS编译gulp-sourcemaps // SCSS地图gulp-clean // 清空文件夹gulp-clean-css // 压缩CSSgulp-uglify // 压缩Jsgulp-concat // 合并文件gulp-rev // 文件加版本号gulp-rev-collector // 替换html中资源文件gulp-minify-html // 压缩htmlgulp-replace // 替换html中的内容gulp-modify-css-urls // 修改css中url路径gulp-rename // 重命名文件 实战代码是自己项目中，根据需求配置的，有点乱，如有不明白的，欢迎留言 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139140141142143144145146147148149150151152153154155156157158159160161162163164165166167168169170171172173174175176177178179180181182183184185186187188189190191192193'use strict';var gulp = require('gulp'), //基础库 scss = require('gulp-sass'), //SCSS编译 sourcemaps = require('gulp-sourcemaps'), //SCSS地图 clean = require('gulp-clean'), //清空文件夹 cleanCss = require('gulp-clean-css'), //压缩CSS uglify = require('gulp-uglify'), //压缩Js concat = require('gulp-concat'), //合并文件 rev = require('gulp-rev'), //文件加版本号 revCollector = require('gulp-rev-collector'), //替换html文件 minifyHTML = require('gulp-minify-html'), //压缩html replace = require('gulp-replace'), //替换html内容 // browserSync = require('browser-sync').create(), // // reload = browserSync.reload, // modifyCssUrls = require('gulp-modify-css-urls'), //修改css中url路径 rename = require('gulp-rename'); //重命名文件var jsSrc = [ // 压缩js按照次序合并 'src/content/js/base_dev/config.js', 'src/content/js/base_dev/ajax.js', 'src/content/js/base_dev/cookie.js', 'src/content/js/base_dev/jiao.js', 'src/content/js/base_dev/log.js', 'src/content/js/base_dev/second-page.js', 'src/content/js/base_dev/storage.js', 'src/content/js/base_dev/string.js', 'src/content/js/base_dev/template-helper.js', 'src/content/js/base_dev/tools.js', 'src/content/js/base_dev/common.js', 'src/content/js/base_dev/tongji.js', // 'src/content/js/base_dev/wechat.js' ], revSrc = [ // 加版本号的资源 'dist/**', '!dist/**/*.html', '!dist/content/swiper/**', '!dist/content/mobiscroll/**', '!dist/content/font/**', '!dist/**/*.json', '!dist/**/*.ico', '!dist/**/*.map', ];// 将你的默认的任务代码放在这gulp.task('default',['clean','copyDist','cleanAvail','rev','cleanCss','uglifyJs','revCollector'], function() &#123;&#125;);// 编译Scssgulp.task('scss',function()&#123; return gulp.src('src/content/scss/*.scss') .pipe(sourcemaps.init()) .pipe(scss().on('error',scss.logError)) .pipe(sourcemaps.write()) .pipe(gulp.dest('src/content/css/'));&#125;)// 合并jsgulp.task('concatJs', function() &#123; return gulp.src(jsSrc) .pipe(concat('global.js')) //合并所有js到global.js .pipe(gulp.dest('src/content/js/base/')) //输出main.js到文件夹&#125;);// 监听任务gulp.task('watch',function()&#123; var watcher = gulp.watch(['src/content/scss/**','src/index.html','src/content/js/base_dev/*.js'], ['scss','concatJs']); watcher.on('change', function(event) &#123; console.log('File ' + event.path + ' was ' + event.type + ', running tasks...'); &#125;);&#125;)//清除文件夹gulp.task('clean',function()&#123; return gulp.src('dist', &#123;read: false&#125;) .pipe(clean());&#125;)// 压缩CSSgulp.task('cleanCss',['rev'],function()&#123; gulp.src("dist/content/css/*.css") // .pipe(rename(&#123; // dirname: "../dist/content/css/", // basename: "shu", // prefix: "", // suffix: ".min", // extname: ".css" // &#125;)) .pipe(cleanCss()) .pipe(gulp.dest("dist/content/css/"));&#125;)// 压缩CSSgulp.task('cleanCssToV2',function()&#123; gulp.src("src/content/css/*.css") // 替换css文件中的images路径 .pipe(modifyCssUrls(&#123; modify: function (url, filePath) &#123; if (url.indexOf('../images') != -1) &#123; return url.replace('../images','/images/v3') &#125; if (url.indexOf('../font') != -1) &#123; return url.replace('../font','../../fonts/v3') &#125; &#125;, &#125;)) .pipe(rename(&#123; dirname: "../../wap_v2/css/v3", prefix: "", suffix: ".min", extname: ".css" &#125;)) .pipe(cleanCss()) .pipe(gulp.dest('src'));&#125;)// 压缩JSgulp.task('uglifyJs',['rev'],function()&#123; gulp.src("dist/content/js/**/*.js") .pipe(uglify()) .pipe(gulp.dest("dist/content/js/"));&#125;)// 文件加版本号gulp.task('rev',['cleanAvail'],function()&#123; return gulp.src(revSrc) .pipe(rev()) .pipe(gulp.dest('dist')) .pipe(rev.manifest()) .pipe(gulp.dest('dist'));&#125;)// 替换html中的文件路径，并压缩htmlgulp.task('revCollector', ['rev'], function () &#123; return gulp.src(['dist/rev-manifest.json', 'dist/**/*.html']) .pipe( revCollector() ) .pipe( minifyHTML(&#123; empty:true, spare:true &#125;) ) .pipe( gulp.dest('dist') );&#125;);// 复制dist文件夹gulp.task('copyDist',['clean'],function()&#123; return gulp.src('src/**') .pipe(gulp.dest('dist'))&#125;)// 清除线上不用文件，scss，base-dev等gulp.task('cleanAvail',['copyDist'],function()&#123; return gulp.src(['dist/content/scss','dist/content/js/base_dev']) .pipe(clean());&#125;)// 构建gulp.task('build',['clean','copyDist','cleanAvail','cleanCss','rev','revCollector'],function()&#123;&#125;)// 静态服务器// gulp.task('browser-sync', function() &#123;// browserSync.init(&#123;// server: &#123;// baseDir: "src/index.html"// &#125;// &#125;);// &#125;);// 代理// gulp.task('browser-sync', function() &#123;// browserSync.init(&#123;// proxy: "你的域名或IP"// &#125;);// &#125;);// 生成对应文件到v2gulp.task('fileToV2',['cssToV2','jsToV2','imgToV2','htmlToV2'],function()&#123;&#125;)gulp.task('cssToV2',function()&#123; gulp.src("dist/content/css/*.css") // 替换css文件中的images路径 .pipe(modifyCssUrls(&#123; modify: function (url, filePath) &#123; if (url.indexOf('../images') != -1) &#123; return url.replace('../images','/images/v3') &#125; if (url.indexOf('../font') != -1) &#123; return url.replace('../font','../../fonts/v3') &#125; &#125;, &#125;)) .pipe(gulp.dest('../wap_v2/css/v3'));&#125;)gulp.task('jsToV2',function()&#123; gulp.src(["!dist/content/js/cycle/**","!dist/content/js/index/**","dist/content/js/**/*.js"]) .pipe(gulp.dest('../wap_v2/js/v3'));&#125;)gulp.task('imgToV2',function()&#123; gulp.src("dist/content/images/**") .pipe(gulp.dest('../wap_v2/images/v3'));&#125;)gulp.task('htmlToV2',function()&#123; gulp.src("dist/**/*.html") // 替换css文件中的images路径 .pipe(replace('../content/css', '/css/v3')) .pipe(replace('../content/js', '/js/v3')) .pipe(replace('../content/images', '/images/v3')) .pipe(replace('../content/mobiscroll', '/js/v3/mobiscroll')) .pipe(replace('../content/swiper', '/js/v3/swiper')) .pipe(gulp.dest('../wap_v2/statics'));&#125;)]]></content>
       <categories>
         <category>js</category>
@@ -145,7 +156,7 @@
   </entry>
   <entry>
     <title><![CDATA[display:box]]></title>
-    <url>%2F2019%2F04%2F14%2Fdisplaybox%2F</url>
+    <url>%2F2019%2F04%2F14%2Fcss%2Fdisplaybox%2F</url>
     <content type="text"><![CDATA[]]></content>
       <categories>
         <category>css</category>
@@ -156,7 +167,7 @@
   </entry>
   <entry>
     <title><![CDATA[markdown 语法整理]]></title>
-    <url>%2F2019%2F04%2F12%2Fmarkdown%2F</url>
+    <url>%2F2019%2F04%2F12%2Fother%2Fmarkdown%2F</url>
     <content type="text"><![CDATA[因为写博客，对markdown语法不是很熟悉，每次都要网上搜，很浪费时间，所以就整理记录一下。这也是写博客的初衷，常看看，温故而知新… 引用Markdown 中引用通过符号 ‘&gt;’ 来实现。’&gt;’ 符号后的空格，可有可无。在引用的区块内，允许换行存在，换行并不会终止引用的区块。如果要结束引用，需要一行空白行，来结束引用的区块。代码如下： 123456&gt; 这是一句引用&gt; 这句仍然在引用区块内&gt;&gt; 这是一句嵌套引用&gt;&gt; 这句仍然在嵌套引用区块内&gt;&gt; 另起一行的引用。前面需要一个视觉上的空行表示内层嵌套的结束，空行前面的('&gt;')可以有可以没有。 效果如下： 这是一句引用这句仍然在引用区块内 这是一句嵌套引用这句仍然在嵌套引用区块内 另起一行的引用。前面需要一个视觉上的空行表示内层嵌套的结束，空行前面的(‘&gt;’)可以有可以没有。 注意： 结束]]></content>
       <categories>
         <category>markdown</category>
@@ -166,25 +177,25 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[看了又看]]></title>
-    <url>%2F2018%2F04%2F14%2Fmovie%2F</url>
-    <content type="text"><![CDATA[海上钢琴师肖申克的救赎盗梦空间移动迷宫源代码人生遥控器闻香识女人全民目击剪刀手爱德华楚门的世界蝴蝶效应禁闭岛七宗罪飞越疯人院死神来了速度与激情让子弹飞金陵十三钗功夫美丽人生欲望之花恐怖游轮惊天魔盗团十二公民hello 树先生活着秋菊打官司]]></content>
-      <categories>
-        <category>有关风月</category>
-      </categories>
-      <tags>
-        <tag>电影</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[那些年看过的电视剧]]></title>
-    <url>%2F2018%2F04%2F14%2Fdrama%2F</url>
+    <url>%2F2018%2F04%2F14%2Flives%2Fdrama%2F</url>
     <content type="text"><![CDATA[少年包青天琅琊榜]]></content>
       <categories>
         <category>有关风月</category>
       </categories>
       <tags>
         <tag>电视剧</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[看了又看]]></title>
+    <url>%2F2018%2F04%2F14%2Flives%2Fmovie%2F</url>
+    <content type="text"><![CDATA[海上钢琴师肖申克的救赎盗梦空间移动迷宫源代码人生遥控器闻香识女人全民目击剪刀手爱德华楚门的世界蝴蝶效应禁闭岛七宗罪飞越疯人院死神来了速度与激情让子弹飞金陵十三钗功夫美丽人生欲望之花恐怖游轮惊天魔盗团十二公民hello 树先生活着秋菊打官司]]></content>
+      <categories>
+        <category>有关风月</category>
+      </categories>
+      <tags>
+        <tag>电影</tag>
       </tags>
   </entry>
 </search>
