@@ -133,9 +133,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[自定义复选框+全选/全不选]]></title>
-    <url>%2F2019%2F04%2F30%2Fjs%2Fcheckout%2F</url>
-    <content type="text"><![CDATA[True mastery of any skill takes a lifetime.对任何技能的掌握都需要一生的刻苦操练 最近在做一个自定义复选框+全选/全不选功能，项目基于vue，现在整理如下 大致思路 声明一个空的数组checked，数据为list 选中：把选中的项的id push进checked; 取消选中：判断当前id是否在checked中，若存在删除当前id 全选功能: 遍历数组，取到所有id，push进checked 全不选：checked重置为空数组 全选按钮状态：判断checked数组的长度是否和数据list长度一致，若一致则为全选状态，则给class加active 复选框状态：用indexOf是否大于-1判断当前id是否存在checked中，若大于-1，则给class加active 自定义全选功能代码123456789101112&lt;!-- 全选按钮 --&gt;&lt;div class="check all" :class="list.length == currChecked.length ?'active':''" @click="checkBoxAll"&gt;全选&lt;/div&gt;&lt;!-- 复选框 --&gt;&lt;div class="check" :class="currChecked.indexOf(item.id) &gt; -1 ? 'active':'a'" @click="checkBox(currChecked,item.id)"&gt;&lt;/div&gt; 123456789101112131415161718192021222324252627282930313233343536// data: &#123; list: [], // 全部选中的值 currChecked: [] // 当前已选中的复选框&#125;,methods: &#123; // 点击复选框 checkBox: function(array, id) &#123; if (array.indexOf(id) == -1) &#123; array.push(id); &#125; else &#123; this.remove(array, id); &#125; &#125;, // 全选按钮 checkBoxAll: function() &#123; let currChecked = this.currChecked let list = this.list if (currChecked.length == list.length) &#123; currChecked = []; &#125; else &#123; currChecked = []; for (var i = 0; i &lt; list.length; i++) &#123; currChecked.push(list[i].id); &#125; &#125; return currChecked; &#125;, // 数组移除值 remove: function(array, val) &#123; var index = array.indexOf(val); if (index &gt; -1) &#123; array.splice(index, 1); &#125; &#125;&#125;]]></content>
+    <title><![CDATA[数组去重，删除数组指定值]]></title>
+    <url>%2F2019%2F04%2F30%2Fjs%2Farray-algorithm%2F</url>
+    <content type="text"><![CDATA[最近在做一个自定义复选框+全选/全不选功能，涉及到一些数组的处理,自定义复选框 数组去重123456789uniq: function(array) &#123; var temp = []; //一个新的临时数组 for (var i = 0; i &lt; array.length; i++) &#123; if (temp.indexOf(array[i]) == -1) &#123; temp.push(array[i]); &#125; &#125; return temp;&#125; 1234// es6中新增的数据结构Setconst set = new Set([1, 2, 3, 4, 4]);[...set]// [1, 2, 3, 4] 删除指定数组1234567// 数组移除值remove: function(array, val) &#123; var index = array.indexOf(val); if (index &gt; -1) &#123; array.splice(index, 1); &#125;&#125; 数组排序123456789// 数组移除值var arr = new Array(6) arr[0] = "10" arr[1] = "5" arr[2] = "40" arr[3] = "25" arr[4] = "1000" arr[5] = "1"console.log(arr.sort((a,b)=&gt;&#123;return b-a&#125;))]]></content>
       <categories>
         <category>js</category>
       </categories>
@@ -144,9 +144,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[数组去重，删除数组指定值]]></title>
-    <url>%2F2019%2F04%2F30%2Fjs%2Farray-algorithm%2F</url>
-    <content type="text"><![CDATA[最近在做一个自定义复选框+全选/全不选功能，涉及到一些数组的处理,自定义复选框 数组去重123456789uniq: function(array) &#123; var temp = []; //一个新的临时数组 for (var i = 0; i &lt; array.length; i++) &#123; if (temp.indexOf(array[i]) == -1) &#123; temp.push(array[i]); &#125; &#125; return temp;&#125; 1234// es6中新增的数据结构Setconst set = new Set([1, 2, 3, 4, 4]);[...set]// [1, 2, 3, 4] 删除指定数组1234567// 数组移除值remove: function(array, val) &#123; var index = array.indexOf(val); if (index &gt; -1) &#123; array.splice(index, 1); &#125;&#125; 数组排序123456789// 数组移除值var arr = new Array(6) arr[0] = "10" arr[1] = "5" arr[2] = "40" arr[3] = "25" arr[4] = "1000" arr[5] = "1"console.log(arr.sort((a,b)=&gt;&#123;return b-a&#125;))]]></content>
+    <title><![CDATA[自定义复选框+全选/全不选]]></title>
+    <url>%2F2019%2F04%2F30%2Fjs%2Fcheckout%2F</url>
+    <content type="text"><![CDATA[True mastery of any skill takes a lifetime.对任何技能的掌握都需要一生的刻苦操练 最近在做一个自定义复选框+全选/全不选功能，项目基于vue，现在整理如下 大致思路 声明一个空的数组checked，数据为list 选中：把选中的项的id push进checked; 取消选中：判断当前id是否在checked中，若存在删除当前id 全选功能: 遍历数组，取到所有id，push进checked 全不选：checked重置为空数组 全选按钮状态：判断checked数组的长度是否和数据list长度一致，若一致则为全选状态，则给class加active 复选框状态：用indexOf是否大于-1判断当前id是否存在checked中，若大于-1，则给class加active 自定义全选功能代码123456789101112&lt;!-- 全选按钮 --&gt;&lt;div class="check all" :class="list.length == currChecked.length ?'active':''" @click="checkBoxAll"&gt;全选&lt;/div&gt;&lt;!-- 复选框 --&gt;&lt;div class="check" :class="currChecked.indexOf(item.id) &gt; -1 ? 'active':'a'" @click="checkBox(currChecked,item.id)"&gt;&lt;/div&gt; 123456789101112131415161718192021222324252627282930313233343536// data: &#123; list: [], // 全部选中的值 currChecked: [] // 当前已选中的复选框&#125;,methods: &#123; // 点击复选框 checkBox: function(array, id) &#123; if (array.indexOf(id) == -1) &#123; array.push(id); &#125; else &#123; this.remove(array, id); &#125; &#125;, // 全选按钮 checkBoxAll: function() &#123; let currChecked = this.currChecked let list = this.list if (currChecked.length == list.length) &#123; currChecked = []; &#125; else &#123; currChecked = []; for (var i = 0; i &lt; list.length; i++) &#123; currChecked.push(list[i].id); &#125; &#125; return currChecked; &#125;, // 数组移除值 remove: function(array, val) &#123; var index = array.indexOf(val); if (index &gt; -1) &#123; array.splice(index, 1); &#125; &#125;&#125;]]></content>
       <categories>
         <category>js</category>
       </categories>
