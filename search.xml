@@ -245,7 +245,7 @@
   <entry>
     <title><![CDATA[hexo 构建发布流程]]></title>
     <url>%2F2019%2F03%2F10%2Fother%2Fhexobuild%2F</url>
-    <content type="text"><![CDATA[启动命令 $ hexo server 生成命令 $ hexo g]]></content>
+    <content type="text"><![CDATA[启动 $ hexo s 生成 $ hexo d -g]]></content>
       <categories>
         <category>other</category>
       </categories>
